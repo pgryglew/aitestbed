@@ -3,102 +3,69 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>aitestbed.pl – testujemy AI na prawdziwych problemach</title>
-  <meta name="description" content="Poligon do testowania pomysłów z AI: sprawdzamy, co działa, zanim trafi do produktu.">
+  <meta name="theme-color" content="#10120f">
+  <meta name="description" content="Porównaj elektryczne motocykle crossowe i off-roadowe: Stark VARG MX, Sur-Ron Light Bee X, Talaria Sting R MX4 i KTM Freeride E.">
+  <title>VoltRider — elektryczne motocykle off-road</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@85..100,400..800&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <header class="hero">
-    <a class="logo" href="/" aria-label="aitestbed.pl – strona główna">ai test<br>bed.pl</a>
-    <nav class="nav" aria-label="Główna nawigacja">
-      <a href="#eksperymenty">Eksperymenty</a>
-      <a href="#pomagamy">Jak pomagamy</a>
-      <a href="#kontakt">Kontakt</a>
-    </nav>
-
-    <div class="hero-body">
-      <h1>Testujemy AI na<br><span>prawdziwych problemach.</span></h1>
-      <p class="lead">To poligon, na którym sprawdzamy pomysły z AI, zanim trafią do produktu. Mniej slajdów, więcej działających prototypów.</p>
-      <p id="status" class="status" role="status">Sprawdzam serwer…</p>
-
-      <div class="ask">
-        <div class="chips" aria-label="Przykładowe pytania">
-          <button type="button" class="chip">Co tu testujecie?</button>
-          <button type="button" class="chip">Jak wygląda typowy eksperyment?</button>
-          <button type="button" class="chip">Czy mogę zgłosić własny pomysł?</button>
-        </div>
-        <form id="ask-form" class="pill">
-          <label for="ask" class="sr">Zapytaj o cokolwiek</label>
-          <input id="ask" name="message" type="text" maxlength="500" autocomplete="off" placeholder="Zapytaj o cokolwiek…" required>
-          <button type="submit" class="send" aria-label="Wyślij">↑</button>
-        </form>
-        <p id="answer" class="answer" aria-live="polite"></p>
-      </div>
-    </div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="VoltRider — strona główna"><span class="brand-mark">V</span> VOLT<span>RIDER</span></a>
+    <nav aria-label="Główna nawigacja"><a href="#modele">Modele</a><a href="#porownanie">Porównanie</a><a href="#wybor">Jak wybrać</a></nav>
+    <a class="header-cta" href="#porownanie">Znajdź swój model <span>↘</span></a>
   </header>
 
-  <section id="eksperymenty" class="light">
-    <div class="wrap">
-      <p class="eyebrow">Wybrane eksperymenty</p>
-      <h2>Rozwiązujemy problemy, które warto rozwiązać.</h2>
-      <p class="intro">Zaczynamy od ludzi, którzy korzystają z narzędzia: ich kontekstu, ograniczeń i tego, co im przeszkadza.</p>
-
-      <article class="card c1">
-        <h3>Asystent do dokumentacji</h3>
-        <p>Wiedza rozproszona w kilkunastu miejscach. Prototyp, który odpowiada na pytania i wskazuje źródło odpowiedzi.</p>
-        <span class="tag">Wiedza firmowa</span>
-      </article>
-      <article class="card c2">
-        <h3>Analiza zgłoszeń klientów</h3>
-        <p>Tysiące wiadomości tygodniowo i nikt ich nie czyta. Sprawdzamy, czy AI potrafi wskazać powtarzające się problemy.</p>
-        <span class="tag">Obsługa klienta</span>
-      </article>
-      <article class="card c3">
-        <h3>Szkice interfejsów z opisu</h3>
-        <p>Od zdania do klikalnego prototypu. Mierzymy, ile czasu to oszczędza projektantom i gdzie zawodzi.</p>
-        <span class="tag">Projektowanie</span>
-      </article>
-
-      <div class="actions">
-        <a class="btn ghost" href="#kontakt">Zgłoś swój pomysł</a>
-        <a class="link" href="/api/health">Zobacz stan API</a>
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse"></span> PRZEWODNIK · SEZON 2026</p>
+        <h1>Cisza.<br><span class="outline">Prąd.</span><br>Pełny gaz.</h1>
+        <p class="hero-lead">Nowa generacja jazdy w terenie. Porównujemy elektryczne motocykle off-road, żeby łatwiej było znaleźć maszynę na Twoje trasy.</p>
+        <a class="button button-lime" href="#modele">Poznaj modele <span>↓</span></a>
+        <div class="hero-foot"><span class="mono">01 / 04 — WYBÓR REDAKCJI</span><span class="scroll-cue">PRZEWIŃ, ŻEBY ODKRYĆ <b>↓</b></span></div>
       </div>
-    </div>
-  </section>
+      <div class="hero-art" aria-label="Stark VARG MX — elektryczny motocykl crossowy" role="img">
+        <img class="hero-photo" src="https://assets.starkfuture.com/frontend-assets/smx1-product/product_carousel_gray_3_mobile.webp" alt="Stark VARG MX na tle leśnej trasy" fetchpriority="high">
+        <div class="sun"></div><div class="terrain terrain-back"></div><div class="terrain terrain-front"></div>
+        <div class="art-label"><span>ZERO EMISSIONS</span><span>ALL TERRAIN</span></div><span class="art-index">E—MX / 26</span>
+      </div>
+      <div class="hero-stat"><strong>4</strong><span>LEGENDY<br>ELEKTRYCZNEGO OFF-ROADU</span><i>↘</i></div>
+    </section>
 
-  <section id="pomagamy" class="dark">
-    <div class="wrap">
-      <p class="eyebrow">Jak pomagamy</p>
-      <h2 class="red">Poruszasz się w czymś skomplikowanym.</h2>
-      <p class="intro">Znamy to. Wyzwania zwykle wyglądają podobnie.</p>
+    <section class="ticker" aria-label="Zalety napędu elektrycznego"><div>MNIEJ SERWISU <b>✳</b> NATYCHMIASTOWY MOMENT <b>✳</b> JAZDA BEZ SPALIN <b>✳</b> WIĘCEJ CZASU NA TRASIE <b>✳</b> MNIEJ SERWISU <b>✳</b> NATYCHMIASTOWY MOMENT <b>✳</b></div></section>
 
-      <ul class="rows">
-        <li><q>Wszystko jest priorytetem. Mamy setki zadań i nikt nie wie, od czego zacząć.</q><p>Wybieramy jeden problem i sprawdzamy go w tydzień.</p><span class="arrow" aria-hidden="true">→</span></li>
-        <li><q>Wszyscy gadają o AI, a nikt nie wie, jak jej użyć.</q><p>Pokazujemy, co działa, na waszych danych i w waszym procesie.</p><span class="arrow" aria-hidden="true">→</span></li>
-        <li><q>Przetestowaliśmy kilka narzędzi i żadne nie zostało z nami na dłużej.</q><p>Mierzymy efekt, zanim ktokolwiek podpisze umowę.</p><span class="arrow" aria-hidden="true">→</span></li>
-        <li><q>Projekt i programowanie rozjechały się, a AI to pogłębiło.</q><p>Budujemy wspólny fundament, z którego korzysta cały zespół.</p><span class="arrow" aria-hidden="true">→</span></li>
-      </ul>
-    </div>
-  </section>
+    <section class="models section-pad" id="modele">
+      <div class="section-heading"><div><p class="eyebrow">01 / KRÓTKA LISTA</p><h2>Wybierz swoją<br><span>maszynę.</span></h2></div><p class="section-intro">Od wyczynowego motocrossu po lekkie leśne ścieżki. Zaznacz do trzech modeli, żeby zestawić je obok siebie.</p></div>
+      <div class="filters" role="group" aria-label="Filtruj modele">
+        <button class="filter active" data-filter="all">Wszystkie <span>04</span></button><button class="filter" data-filter="mx">Motocross</button><button class="filter" data-filter="trail">Trail / enduro</button>
+        <label class="sort-label" for="sort">SORTUJ</label><select id="sort" aria-label="Sortuj modele"><option value="featured">Polecane</option><option value="power">Moc: od największej</option><option value="weight">Waga: od najlżejszej</option></select>
+      </div>
+      <div class="bike-grid" id="bike-grid"></div>
+      <p class="spec-note">Dane mogą się różnić zależnie od rocznika, rynku i konfiguracji. Zasięg zależy od terenu, stylu jazdy i temperatury. Przed zakupem sprawdź specyfikację u producenta lub dealera.</p>
+    </section>
 
-  <section id="kontakt" class="cta">
-    <div class="wrap">
-      <h2>Masz trudny problem? Posłuchamy.</h2>
-      <p>Opisz, z czym się mierzysz, a ustalimy, co dalej.</p>
-      <a class="btn solid" href="mailto:kontakt@aitestbed.pl">Napisz do nas →</a>
-    </div>
-  </section>
+    <section class="compare section-pad" id="porownanie">
+      <div class="section-heading compare-heading"><div><p class="eyebrow">02 / ZESTAWIENIE</p><h2>Cyfry mówią<br><span>same za siebie.</span></h2></div><p class="section-intro">Porównanie parametrów katalogowych. Wybierz modele powyżej — albo zacznij od naszej selekcji.</p></div>
+      <div class="compare-toolbar"><div><span class="live-dot"></span><span id="selection-label">Wybrane modele</span></div><button class="text-button" id="reset-selection" type="button">Wyczyść wybór ↗</button></div>
+      <div class="table-scroll"><table class="compare-table"><thead id="compare-head"></thead><tbody id="compare-body"></tbody></table></div>
+      <p class="table-note">* Producent podaje zasięg w warunkach testowych; czas jazdy mocno zależy od trasy i tempa. „Do” oznacza deklarowaną wartość maksymalną.</p>
+    </section>
 
-  <footer>
-    <div class="wrap">
-      <p class="wordmark" aria-hidden="true">aitest<br>bed.pl</p>
-      <p class="fine">© 2026 aitestbed.pl</p>
-    </div>
-  </footer>
+    <section class="guide section-pad" id="wybor">
+      <div class="guide-title"><p class="eyebrow">03 / KRÓTKI PORADNIK</p><h2>Najpierw<br><span>teren.</span></h2></div>
+      <div class="guide-list">
+        <article><span class="guide-num">01</span><div><h3>Tor motocrossowy?</h3><p>Szukaj pełnowymiarowego podwozia, dużych kół i zawieszenia gotowego na skoki. Stark VARG MX jest z tej czwórki maszyną stworzoną do wyścigowego MX.</p></div><span class="guide-arrow">↗</span></article>
+        <article><span class="guide-num">02</span><div><h3>Leśne ścieżki i techniczne podjazdy?</h3><p>Lżejsza maszyna ułatwia manewry i podnoszenie. Surron Light Bee i Talaria Sting R to kompaktowe dirt bike’i; sprawdź lokalne przepisy i dopuszczenie do ruchu.</p></div><span class="guide-arrow">↗</span></article>
+        <article><span class="guide-num">03</span><div><h3>Jeden motocykl do wielu zadań?</h3><p>Enduro łączy jazdę poza torem z większą wszechstronnością. KTM Freeride E ma homologację drogową na wybranych rynkach — potwierdź ją dla konkretnego egzemplarza.</p></div><span class="guide-arrow">↗</span></article>
+      </div>
+    </section>
 
+    <section class="sources section-pad"><div><p class="eyebrow">DANE I ZDJĘCIA</p><h2>Sprawdź u źródła.</h2><p>Modele mają różne przeznaczenie i specyfikacje zależne od rynku. Zdjęcia motocykli otwierają się ze źródeł producentów i sprzedawców.</p></div><div class="source-links"><a href="https://www.starkfuture.com/products/stark-varg" target="_blank" rel="noreferrer">Stark VARG MX ↗</a><a href="https://sur-ron.com/" target="_blank" rel="noreferrer">Sur-Ron ↗</a><a href="https://www.talaria-ebike.com/product/talaria-sting-r-mx4/" target="_blank" rel="noreferrer">Talaria Sting R MX4 ↗</a><a href="https://www.ktm.com/" target="_blank" rel="noreferrer">KTM Freeride E ↗</a></div></section>
+  </main>
+  <footer><a class="brand" href="#top"><span class="brand-mark">V</span> VOLT<span>RIDER</span></a><span>ELEKTRYCZNY OFF-ROAD, BEZ ZGADYWANIA.</span><a href="#top">NA GÓRĘ ↑</a></footer>
   <script src="/app.js"></script>
 </body>
 </html>

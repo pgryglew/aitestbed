@@ -1,44 +1,52 @@
-const statusEl = document.getElementById('status');
-const form = document.getElementById('ask-form');
-const input = document.getElementById('ask');
-const answer = document.getElementById('answer');
+const bikes = [
+  {id:'stark',brand:'STARK FUTURE',name:'VARG MX 1.2',subtitle:'Pełnowymiarowy motocross · wyścigi',kind:'mx',label:'MX RACE',power:60,powerText:'60 / 80 KM',weight:118,battery:'7,2 kWh',range:'do 6 h*',charge:'ok. 2 h',price:'segment premium',color:'#dce8c4',accent:'#a8cc2a',photo:'https://assets.starkfuture.com/frontend-assets/mx1.2/hero_01_mobile.webp',source:'https://www.starkfuture.com/products/stark-varg',sourceLabel:'STARK VARG MX 1.2'},
+  {id:'sur-ron',brand:'SUR-RON',name:'Light Bee X',subtitle:'Lekki dirt bike · leśne trasy',kind:'trail',label:'TRAIL',power:8,powerText:'8 kW',weight:57,battery:'2,4 kWh',range:'do 75 km*',charge:'2–3,5 h',price:'sprawdź u dealera',color:'#d8ded5',accent:'#e4f34b',photo:'https://volitionebike.com/wp-content/uploads/2020/03/MY25_LBX_-2-scaled-1-768x549.jpg',source:'https://sur-ron.com/',sourceLabel:'SUR-RON Light Bee X'},
+  {id:'talaria',brand:'TALARIA',name:'Sting R MX4',subtitle:'Kompaktowy off-road · MX / trail',kind:'trail',label:'MX / TRAIL',power:8,powerText:'8 kW',weight:66,battery:'2,7 kWh',range:'do 120 km*',charge:'ok. 3–4 h',price:'sprawdź u dealera',color:'#e7d8c8',accent:'#f08a48',photo:'https://ridethewind.ca/cdn/shop/files/talaria-sting-MX4-3-electric-motorcycle.jpg?v=1761764161&width=1946',source:'https://www.talaria-ebike.com/product/talaria-sting-r-mx4/',sourceLabel:'TALARIA Sting R MX4'},
+  {id:'ktm',brand:'KTM',name:'Freeride E',subtitle:'Enduro · nowa generacja 2025',kind:'trail',label:'ENDURO',power:19.2,powerText:'19,2 kW',weight:112,battery:'5,5 kWh',range:'2–3 h*',charge:'1,5–8 h',price:'sprawdź u dealera',color:'#f0d7c3',accent:'#ff7028',photo:'https://www.motorrad-bilder.at/slideshows/291/023712/642682_MY25-KTM-FREERIDEE-EU-90-left_03_STUDIOIMAGES_EUROPEGLOBAL_STUDIO.jpg',source:'https://press.ktm.com/news-freshly-charged-2025-ktm-freeride-e-brings-new-energy-to-ktm-offroad-e-mobility?id=206881&l=uk&menueid=5904',sourceLabel:'KTM FREERIDE E 2025'}
+];
 
-async function loadStatus() {
-  try {
-    const data = await (await fetch('/api/health')).json();
-    statusEl.textContent = `Serwer działa · Node ${data.node}`;
-    statusEl.className = 'status ok';
-  } catch {
-    statusEl.textContent = 'Brak połączenia z serwerem';
-    statusEl.className = 'status err';
-  }
+const artwork = (bike) => `<img src="${bike.photo}" alt="${bike.brand} ${bike.name} — zdjęcie motocykla" loading="lazy" decoding="async">`;
+
+const grid = document.getElementById('bike-grid');
+const selected = new Set(['stark','sur-ron','talaria']);
+let activeFilter = 'all';
+
+function card(bike) {
+  const on = selected.has(bike.id);
+  return `<article class="bike-card" data-kind="${bike.kind}"><div class="bike-visual" style="--visual:${bike.color}">${artwork(bike)}<span class="model-code">VR—${String(bikes.indexOf(bike)+1).padStart(2,'0')}</span><span class="type-chip">${bike.label}</span></div><div class="bike-card-content"><span class="card-brand">${bike.brand}</span><h3>${bike.name}</h3><p class="subtitle">${bike.subtitle}</p><div class="mini-specs"><div><span>Moc max.</span><strong>${bike.powerText}</strong></div><div><span>Masa</span><strong>${bike.weight} kg</strong></div><div><span>Bateria</span><strong>${bike.battery}</strong></div><div><span>Zasięg / czas</span><strong>${bike.range}</strong></div></div><div class="card-bottom"><span class="price-note">${bike.price}</span><button type="button" class="compare-toggle ${on?'selected':''}" data-select="${bike.id}" aria-pressed="${on}">${on?'✓ Wybrano':'+ Porównaj'}</button></div></div></article>`;
 }
 
-async function ask(message) {
-  answer.textContent = 'Wysyłam…';
-  try {
-    const res = await fetch('/api/echo', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message }),
-    });
-    const data = await res.json();
-    answer.textContent = res.ok ? `Serwer odpowiada: „${data.message}”` : data.error;
-  } catch {
-    answer.textContent = 'Nie udało się połączyć z serwerem.';
-  }
+function renderGrid() {
+  const sort = document.getElementById('sort').value;
+  let list = bikes.filter((b) => activeFilter === 'all' || b.kind === activeFilter);
+  if (sort === 'power') list.sort((a,b) => b.power-a.power);
+  if (sort === 'weight') list.sort((a,b) => a.weight-b.weight);
+  grid.innerHTML = list.map(card).join('');
+  grid.querySelectorAll('[data-select]').forEach((button) => button.addEventListener('click', () => toggleBike(button.dataset.select)));
 }
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  ask(input.value);
-});
+function renderCompare() {
+  const chosen = bikes.filter((b) => selected.has(b.id));
+  document.getElementById('selection-label').textContent = `${chosen.length} ${chosen.length === 1 ? 'model wybrany' : 'modele wybrane'} · możesz wybrać do 3`;
+  const head = document.getElementById('compare-head');
+  const body = document.getElementById('compare-body');
+  head.innerHTML = `<tr><th>PARAMETR</th>${chosen.length ? chosen.map(b=>`<th><span class="th-brand">${b.brand}</span>${b.name}</th>`).join('') : '<th>Wybierz model powyżej, aby zobaczyć zestawienie</th>'}</tr>`;
+  const rows = [['Moc maksymalna',b=>b.powerText],['Masa katalogowa',b=>`${b.weight} kg`],['Bateria',b=>b.battery],['Deklarowany zasięg / czas',b=>b.range],['Ładowanie',b=>b.charge],['Charakter',b=>b.subtitle],['Źródło danych',b=>`<a href="${b.source}" target="_blank" rel="noreferrer">${b.sourceLabel} ↗</a>`]];
+  body.innerHTML = rows.map(([label,value])=>`<tr><td>${label}</td>${chosen.length?chosen.map(b=>`<td>${value(b)}</td>`).join(''):'<td>—</td>'}</tr>`).join('');
+}
 
-document.querySelectorAll('.chip').forEach((chip) => {
-  chip.addEventListener('click', () => {
-    input.value = chip.textContent;
-    ask(chip.textContent);
-  });
-});
+function toggleBike(id) {
+  if (selected.has(id)) selected.delete(id);
+  else if (selected.size < 3) selected.add(id);
+  else { document.getElementById('selection-label').textContent = 'Wybierz maksymalnie 3 modele — usuń jeden z obecnych.'; return; }
+  renderGrid(); renderCompare();
+}
 
-loadStatus();
+document.querySelectorAll('.filter').forEach((button)=>button.addEventListener('click',()=>{
+  activeFilter = button.dataset.filter;
+  document.querySelectorAll('.filter').forEach((item)=>item.classList.toggle('active',item===button));
+  renderGrid();
+}));
+document.getElementById('sort').addEventListener('change',renderGrid);
+document.getElementById('reset-selection').addEventListener('click',()=>{selected.clear();renderGrid();renderCompare();});
+renderGrid(); renderCompare();
