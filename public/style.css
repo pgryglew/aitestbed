@@ -128,6 +128,10 @@ body{background:#f4f3ef;color:#171815;font-size:16px;line-height:1.65}
   .source-links{min-width:0}
   footer{padding-inline:20px}
 }
+
+/* Show the complete motorcycle in every product card. */
+.bike-visual img{object-fit:contain!important;object-position:center;padding:12px 18px;transform:none!important}
+.bike-card:hover .bike-visual img{transform:none!important}
 @media(max-width:390px){
   .site-header{padding-inline:12px}
   .brand{font-size:11px;gap:6px}
@@ -141,5 +145,34 @@ body{background:#f4f3ef;color:#171815;font-size:16px;line-height:1.65}
   .filters{column-gap:6px}
   .filter{padding:8px 10px}
   .bike-visual{aspect-ratio:1.35}
+}
+
+/* Product cards pair a square, uncropped photo with the model details. */
+.bike-card{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);align-items:stretch}
+.bike-visual{width:100%;height:auto;min-width:0;aspect-ratio:1;align-self:start}
+.bike-visual img{width:100%;height:100%;object-fit:contain!important;object-position:center;padding:12px!important;transform:none!important}
+.bike-card:hover .bike-visual img{transform:none!important}
+.bike-card-content{min-width:0;padding:18px 16px 15px}
+.bike-card h3{font-size:clamp(16px,1.25vw,22px)}
+.bike-card .subtitle{font-size:clamp(10px,.75vw,13px)}
+.mini-specs{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 6px}
+.mini-specs strong{font-size:clamp(11px,.85vw,14px)}
+.card-bottom{align-items:flex-end;gap:8px;flex-wrap:wrap}
+@media(max-width:760px){
+  .bike-card{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)}
+  .bike-card-content{padding:15px 12px 12px}
+  .bike-card .subtitle{min-height:0}
+  .mini-specs{gap:8px 5px;margin:12px 0;padding:10px 0}
+  .mini-specs span{font-size:8px}
+  .mini-specs strong{font-size:11px}
+  .price-note{font-size:9px}
+  .compare-toggle{font-size:10px;padding:7px 9px}
+}
+@media(max-width:390px){
+  .bike-card{grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr)}
+  .bike-card-content{padding:12px 9px}
+  .bike-card h3{font-size:16px}
+  .bike-card .subtitle{font-size:10px}
+  .mini-specs{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
