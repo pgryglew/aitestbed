@@ -21,14 +21,26 @@
     <section class="game-intro">
       <p class="eyebrow"><span class="pulse"></span> VOLTRIDER ARCADE · 01</p>
       <h1>Leśny <span>sprint.</span></h1>
-      <p>Dodaj gazu, przeskakuj przez korzenie i utrzymaj motocykl na kołach. Jak daleko zajedziesz?</p>
+      <p>Motocykl jedzie sam. Przytrzymaj spację, aby skoczyć wyżej i dłużej polecieć.</p>
     </section>
     <section class="game-shell" aria-label="Gra Leśny sprint">
       <div class="game-hud"><span>WYNIK <strong id="score">0000</strong></span><span>REKORD <strong id="best">0000</strong></span><span>ŻYCIA <strong id="lives">♥ ♥ ♥</strong></span><button id="restart" type="button">↻ NOWA JAZDA</button></div>
-      <div class="game-stage"><canvas id="game" aria-label="Gra motocyklowa. Naciśnij strzałkę w prawo, aby zacząć." role="img"></canvas><div class="game-overlay" id="overlay"><strong id="overlay-title">Gotowy na trasę?</strong><span id="overlay-copy">Naciśnij → lub „Gaz”, aby ruszyć</span></div></div>
-      <div class="game-controls"><div class="keyboard-hint"><kbd>→</kbd> gaz <kbd>←</kbd> hamulec <kbd>SPACJA</kbd> skok <kbd>↑</kbd>/<kbd>↓</kbd> balans</div><div class="touch-controls"><button data-control="brake" aria-label="Hamulec">◀</button><button data-control="gas" aria-label="Gaz">▶</button><button data-control="jump" aria-label="Skok">⤒</button><button data-control="tiltBack" aria-label="Odchyl motocykl do tyłu">↶</button></div></div>
+      <div class="game-stage"><canvas id="game" aria-label="Gra motocyklowa. Przytrzymaj spację, aby skakać." role="img"></canvas><div class="game-overlay" id="overlay"><strong id="overlay-title">Gotowy na trasę?</strong><span id="overlay-copy">Kliknij START albo naciśnij spację</span><button id="start-game" type="button">▶ START</button></div></div>
+      <div class="game-controls"><div class="keyboard-hint"><kbd>SPACJA</kbd> naciśnij, aby skoczyć · przytrzymaj dłużej, aby polecieć wyżej</div><div class="touch-controls"><button id="jump-button" aria-label="Przytrzymaj, aby skoczyć">⤒ SKOK</button></div></div>
     </section>
-    <p class="game-note">Przeskakuj głazy spacją. Każde zderzenie kosztuje jedno życie i rozpoczyna trasę od nowa.</p>
+    <section class="leaderboard-panel" aria-label="Tabela najlepszych wyników">
+      <form class="player-form" id="player-form">
+        <p class="eyebrow">TWÓJ PROFIL</p>
+        <label for="player-name">Imię zawodnika</label>
+        <div><input id="player-name" name="player" maxlength="18" autocomplete="nickname" placeholder="Wpisz imię" required><button type="submit">ZAPISZ</button></div>
+        <small>Rekord zapisuje się w tej przeglądarce dla wybranego imienia.</small>
+      </form>
+      <div class="leaderboard">
+        <p class="eyebrow">TOP WYNIKI</p>
+        <ol id="leaderboard-list"><li class="empty-score">Jeszcze brak wyników — ruszaj na trasę!</li></ol>
+      </div>
+    </section>
+    <p class="game-note">Przeskakuj przeszkody o różnej wysokości. Co 20 pokonanych przeszkód motocykl przyspiesza.</p>
   </main>
   <script src="/game.js"></script>
 </body>

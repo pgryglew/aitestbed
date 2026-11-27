@@ -1,35 +1,181 @@
-const canvas=document.getElementById('game');
-const ctx=canvas.getContext('2d');
-const scoreEl=document.getElementById('score');
-const bestEl=document.getElementById('best');
-const livesEl=document.getElementById('lives');
-const overlay=document.getElementById('overlay');
-const titleEl=document.getElementById('overlay-title');
-const copyEl=document.getElementById('overlay-copy');
-const keys={gas:false,brake:false,tiltFront:false,tiltBack:false};
-let w=0,h=0,dpr=1,frame=0,scroll=0,speed=0,angle=0,angular=0,air=0,airVelocity=0,started=false,crashed=false,score=0,lives=3,last=0;
-let best=Number(localStorage.getItem('voltrider-best')||0);
-bestEl.textContent=String(best).padStart(4,'0');
-function resize(){const box=canvas.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);w=box.width;h=box.height;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+const livesEl = document.getElementById('lives');
+const overlay = document.getElementById('overlay');
+const titleEl = document.getElementById('overlay-title');
+const copyEl = document.getElementById('overlay-copy');
+const obstacles = [24, 38, 55, 31, 62, 44, 27, 51];
+const obstacleColors = ['#b46c40', '#6e8e45', '#547fa5', '#b58a31', '#865aa6', '#c35f68'];
+const playerInput = document.getElementById('player-name');
+const leaderboardList = document.getElementById('leaderboard-list');
+let width = 0, height = 0, pixelRatio = 1;
+let scroll = 0, speed = 0, score = 0, lives = 3, passed = 0;
+let started = false, gameOver = false, jumpHeight = 0, jumpVelocity = 0;
+let jumpHeld = false, jumpHoldFrames = 0, nextObstacle = 0;
+let playerName = localStorage.getItem('voltrider-player') || '';
+playerInput.value = playerName;
+
+function resize() {
+  const rect = canvas.getBoundingClientRect();
+  pixelRatio = Math.min(devicePixelRatio || 1, 2);
+  width = rect.width; height = rect.height;
+  canvas.width = Math.round(width * pixelRatio);
+  canvas.height = Math.round(height * pixelRatio);
+  ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+}
 new ResizeObserver(resize).observe(canvas);
-function ground(x){return h*.73+Math.sin((x+scroll*.7)/75)*18+Math.sin((x+scroll*.35)/29)*7+Math.sin((x+scroll*.18)/155)*25}
-function updateLives(){livesEl.textContent=Array.from({length:3},(_,i)=>i<lives?'♥':'♡').join(' ')}
-function reset(){scroll=0;speed=0;angle=0;angular=0;air=0;airVelocity=0;started=false;crashed=false;score=0;lives=3;scoreEl.textContent='0000';updateLives();overlay.classList.remove('hidden');titleEl.textContent='Gotowy na trasę?';copyEl.textContent='Naciśnij → lub „Gaz”, aby ruszyć'}
-function loseLife(){lives--;updateLives();scroll=0;speed=0;angle=0;angular=0;air=0;airVelocity=0;score=0;scoreEl.textContent='0000';started=false;if(lives<=0){crashed=true;titleEl.textContent='Koniec jazdy';copyEl.textContent='Brak żyć · Kliknij „Nowa jazda”, aby spróbować ponownie'}else{crashed=false;titleEl.textContent='Uważaj na przeszkody';copyEl.textContent=`Życie stracone · pozostało ${lives} · Naciśnij → lub „Gaz”, aby ruszyć od początku`}overlay.classList.remove('hidden')}
-function start(){if(crashed)reset();started=true;overlay.classList.add('hidden')}
-function roundedRect(x,y,width,height,r){ctx.beginPath();ctx.roundRect(x,y,width,height,r);ctx.fill()}
-function drawBike(x,y,a){ctx.save();ctx.translate(x,y);ctx.rotate(a);const r=14;ctx.lineWidth=3;ctx.strokeStyle='#171914';ctx.fillStyle='#10120f';for(const wx of [-29,29]){ctx.beginPath();ctx.arc(wx,0,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#d7ff3f';ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.moveTo(wx-r,0);ctx.lineTo(wx+r,0);ctx.moveTo(wx,-r);ctx.lineTo(wx,r);ctx.strokeStyle='#85897d';ctx.lineWidth=1;ctx.stroke()}ctx.strokeStyle='#bfc3b1';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-29,-3);ctx.lineTo(-9,-21);ctx.lineTo(12,-18);ctx.lineTo(29,-3);ctx.moveTo(-9,-21);ctx.lineTo(1,-2);ctx.lineTo(-29,-3);ctx.moveTo(12,-18);ctx.lineTo(1,-2);ctx.stroke();ctx.fillStyle='#d7ff3f';ctx.beginPath();ctx.moveTo(-10,-25);ctx.lineTo(12,-23);ctx.lineTo(23,-17);ctx.lineTo(8,-14);ctx.lineTo(-7,-16);ctx.closePath();ctx.fill();ctx.strokeStyle='#f1f2e9';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-4,-25);ctx.lineTo(-9,-42);ctx.lineTo(3,-50);ctx.lineTo(15,-32);ctx.stroke();ctx.fillStyle='#f1f2e9';ctx.beginPath();ctx.arc(3,-54,7,0,Math.PI*2);ctx.fill();ctx.fillStyle='#d7ff3f';ctx.beginPath();ctx.arc(5,-55,7,-.8,1.3);ctx.fill();ctx.restore()}
-function draw(){if(!w||!h)return;frame++;const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,'#18231a');sky.addColorStop(1,'#546147');ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);ctx.fillStyle='#d7ff3f';ctx.globalAlpha=.08;ctx.beginPath();ctx.arc(w*.78,h*.18,55,0,7);ctx.fill();ctx.globalAlpha=1;
-  for(let i=0;i<13;i++){const x=((i*117-scroll*.2)%(w+150)+w+150)%(w+150)-40;const y=h*.49+(i%3)*20;ctx.fillStyle=i%2?'#202d1e':'#26351f';ctx.beginPath();ctx.moveTo(x,y-65-(i%4)*12);ctx.lineTo(x-37,y+24);ctx.lineTo(x+38,y+24);ctx.closePath();ctx.fill();ctx.fillStyle='#352c20';ctx.fillRect(x-3,y+15,6,50)}
-  ctx.beginPath();ctx.moveTo(0,h);for(let x=0;x<=w+4;x+=4)ctx.lineTo(x,ground(x));ctx.lineTo(w,h);ctx.closePath();const dirt=ctx.createLinearGradient(0,h*.68,0,h);dirt.addColorStop(0,'#727144');dirt.addColorStop(1,'#302d20');ctx.fillStyle=dirt;ctx.fill();ctx.beginPath();for(let x=0;x<=w+4;x+=4){if(x===0)ctx.moveTo(x,ground(x));else ctx.lineTo(x,ground(x))}ctx.strokeStyle='#d7ff3f';ctx.lineWidth=3;ctx.stroke();
-  const bx=w*.32+Math.min(speed*2,55);if(started&&!crashed){if(keys.gas)speed=Math.min(speed+.11,8);else speed=Math.max(speed-.035,0);if(keys.brake)speed=Math.max(0,speed-.2);scroll+=speed;score=Math.floor(scroll/8);scoreEl.textContent=String(score).padStart(4,'0');if(keys.tiltFront)angular+=.003;if(keys.tiltBack)angular-=.003;const slope=Math.atan2(ground(bx+25)-ground(bx-25),50);if(air<1){angular+=(slope-angle)*.055;angle+=angular;angular*=.91}else{airVelocity-=.22;air+=airVelocity;angle+=angular;angular*=.992;if(air<=0){air=0;const landing=Math.abs(((angle+Math.PI)%(Math.PI*2))-Math.PI);if(landing>1.45){loseLife()}else{angle*=.48;angular*=.45}}}if(air<1&&Math.abs(ground(bx+speed*2)-ground(bx))>13){air=1;airVelocity=2.8;angular+=speed*.013}}
-  const worldBikeX=scroll+bx;const firstRock=Math.max(0,Math.floor((scroll-650)/520));for(let i=firstRock;i<firstRock+5;i++){const rockX=650+i*520-scroll;if(rockX<-30||rockX>w+30)continue;const rockY=ground(rockX);ctx.fillStyle='#493c2d';ctx.beginPath();ctx.moveTo(rockX-15,rockY);ctx.lineTo(rockX-11,rockY-13);ctx.lineTo(rockX-2,rockY-22);ctx.lineTo(rockX+10,rockY-18);ctx.lineTo(rockX+16,rockY);ctx.closePath();ctx.fill();ctx.strokeStyle='#a79b70';ctx.lineWidth=1.5;ctx.stroke();if(started&&Math.abs(worldBikeX-(650+i*520))<29&&air<25){loseLife();break}}
-  const bikeY=ground(bx)-13-air;drawBike(bx,bikeY,angle);if(!started&&!crashed)drawBike(w*.32,ground(w*.32)-13,0);requestAnimationFrame(draw)}
-function jump(){if(!started)start();if(air<1){air=1;airVelocity=6.2;angular-=.035}}
-window.addEventListener('keydown',e=>{const map={ArrowRight:'gas',ArrowLeft:'brake',ArrowUp:'tiltBack',ArrowDown:'tiltFront'};if(e.code==='Space'){e.preventDefault();if(!e.repeat)jump();return}const k=map[e.key];if(k){e.preventDefault();keys[k]=true;if(!started&&k==='gas')start()}});window.addEventListener('keyup',e=>{const map={ArrowRight:'gas',ArrowLeft:'brake',ArrowUp:'tiltBack',ArrowDown:'tiltFront'};if(map[e.key])keys[map[e.key]]=false});
-document.querySelectorAll('[data-control]').forEach(button=>{const key=button.dataset.control;button.addEventListener('pointerdown',e=>{e.preventDefault();button.setPointerCapture(e.pointerId);if(key==='jump'){jump();return}keys[key]=true;if(!started&&key==='gas')start()});for(const event of ['pointerup','pointercancel','lostpointercapture'])button.addEventListener(event,()=>{if(key!=='jump')keys[key]=false})});
-document.getElementById('restart').addEventListener('click',reset);
-window.addEventListener('blur',()=>Object.keys(keys).forEach(k=>keys[k]=false));
-window.addEventListener('beforeunload',()=>{if(score>best){localStorage.setItem('voltrider-best',score);}});
-const scoreWatcher=setInterval(()=>{if(score>best){best=score;localStorage.setItem('voltrider-best',best);bestEl.textContent=String(best).padStart(4,'0')}},500);
-updateLives();resize();requestAnimationFrame(draw);
+function ground(x) {
+  return height * .73 + Math.sin((x + scroll * .7) / 75) * 18 + Math.sin((x + scroll * .35) / 29) * 7 + Math.sin((x + scroll * .18) / 155) * 25;
+}
+function updateHud() {
+  scoreEl.textContent = String(score).padStart(4, '0');
+  livesEl.textContent = Array.from({ length: 3 }, (_, i) => i < lives ? '♥' : '♡').join(' ');
+  const record = getRecords().find(entry => entry.name.toLocaleLowerCase() === playerName.toLocaleLowerCase());
+  bestEl.textContent = String(record?.score || 0).padStart(4, '0');
+}
+function getRecords() {
+  try { return JSON.parse(localStorage.getItem('voltrider-leaderboard') || '[]'); }
+  catch { return []; }
+}
+function saveRecord() {
+  if (!playerName || score < 1) return;
+  const records = getRecords();
+  const existing = records.find(entry => entry.name.toLocaleLowerCase() === playerName.toLocaleLowerCase());
+  if (existing) existing.score = Math.max(existing.score, score);
+  else records.push({ name: playerName, score });
+  records.sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+  localStorage.setItem('voltrider-leaderboard', JSON.stringify(records.slice(0, 10)));
+  renderLeaderboard();
+  updateHud();
+}
+function renderLeaderboard() {
+  const records = getRecords();
+  leaderboardList.innerHTML = records.length
+    ? records.map((entry, index) => `<li><span><b>${String(index + 1).padStart(2, '0')}</b> ${escapeHtml(entry.name)}</span><strong>${entry.score}</strong></li>`).join('')
+    : '<li class="empty-score">Jeszcze brak wyników — ruszaj na trasę!</li>';
+}
+function escapeHtml(value) {
+  return value.replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+}
+function startRun(newGame = false) {
+  if (newGame || gameOver) lives = 3;
+  gameOver = false;
+  scroll = 0; speed = 3.85; score = 0; passed = 0; nextObstacle = 0;
+  jumpHeight = 0; jumpVelocity = 0; jumpHoldFrames = 0;
+  started = true;
+  updateHud();
+  overlay.classList.add('hidden');
+}
+function loseLife() {
+  lives--;
+  scroll = 0; speed = 0; score = 0; passed = 0; nextObstacle = 0;
+  jumpHeight = 0; jumpVelocity = 0; jumpHeld = false;
+  started = false;
+  gameOver = lives <= 0;
+  updateHud();
+  titleEl.textContent = gameOver ? 'Koniec jazdy' : 'Uważaj na przeszkody';
+  copyEl.textContent = gameOver
+    ? 'Brak żyć · Kliknij „Nowa jazda”, aby zacząć od początku'
+    : `Stracone życie · pozostało ${lives} · naciśnij START, aby ruszyć od początku`;
+  overlay.classList.remove('hidden');
+}
+function jumpStart() {
+  if (!started) startRun();
+  if (jumpHeight === 0) {
+    jumpVelocity = 7.4;
+    jumpHeight = .1;
+    jumpHoldFrames = 0;
+  }
+  jumpHeld = true;
+}
+function drawBike(x, y) {
+  ctx.save(); ctx.translate(x, y);
+  for (const wx of [-29, 29]) {
+    ctx.beginPath(); ctx.arc(wx, 0, 14, 0, Math.PI * 2);
+    ctx.fillStyle = '#10120f'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#d7ff3f'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(wx - 12, 0); ctx.lineTo(wx + 12, 0); ctx.moveTo(wx, -12); ctx.lineTo(wx, 12);
+    ctx.lineWidth = 1; ctx.strokeStyle = '#85897d'; ctx.stroke();
+  }
+  ctx.beginPath(); ctx.moveTo(-29, -3); ctx.lineTo(-9, -21); ctx.lineTo(12, -18); ctx.lineTo(29, -3);
+  ctx.moveTo(-9, -21); ctx.lineTo(1, -2); ctx.lineTo(-29, -3); ctx.moveTo(12, -18); ctx.lineTo(1, -2);
+  ctx.lineWidth = 4; ctx.strokeStyle = '#bfc3b1'; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-10, -25); ctx.lineTo(12, -23); ctx.lineTo(23, -17); ctx.lineTo(8, -14); ctx.lineTo(-7, -16); ctx.closePath();
+  ctx.fillStyle = '#d7ff3f'; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-4, -25); ctx.lineTo(-9, -42); ctx.lineTo(3, -50); ctx.lineTo(15, -32);
+  ctx.lineWidth = 3; ctx.strokeStyle = '#f1f2e9'; ctx.stroke();
+  ctx.beginPath(); ctx.arc(3, -54, 7, 0, Math.PI * 2); ctx.fillStyle = '#f1f2e9'; ctx.fill();
+  ctx.restore();
+}
+function drawObstacle(x, y, obstacleHeight, color) {
+  ctx.fillStyle = color; ctx.strokeStyle = '#f1f2e9'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(x - 15, y); ctx.lineTo(x - 13, y - obstacleHeight * .58);
+  ctx.lineTo(x - 4, y - obstacleHeight); ctx.lineTo(x + 10, y - obstacleHeight * .82);
+  ctx.lineTo(x + 16, y); ctx.closePath(); ctx.fill(); ctx.stroke();
+}
+function draw() {
+  if (!width || !height) return;
+  const sky = ctx.createLinearGradient(0, 0, 0, height);
+  sky.addColorStop(0, '#18231a'); sky.addColorStop(1, '#546147');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = '#d7ff3f'; ctx.globalAlpha = .08; ctx.beginPath(); ctx.arc(width * .78, height * .18, 55, 0, 7); ctx.fill(); ctx.globalAlpha = 1;
+  for (let i = 0; i < 13; i++) {
+    const x = ((i * 117 - scroll * .2) % (width + 150) + width + 150) % (width + 150) - 40;
+    const y = height * .49 + (i % 3) * 20;
+    ctx.fillStyle = i % 2 ? '#202d1e' : '#26351f'; ctx.beginPath(); ctx.moveTo(x, y - 65 - (i % 4) * 12); ctx.lineTo(x - 37, y + 24); ctx.lineTo(x + 38, y + 24); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#352c20'; ctx.fillRect(x - 3, y + 15, 6, 50);
+  }
+  ctx.beginPath(); ctx.moveTo(0, height);
+  for (let x = 0; x <= width + 4; x += 4) ctx.lineTo(x, ground(x));
+  ctx.lineTo(width, height); ctx.closePath();
+  const dirt = ctx.createLinearGradient(0, height * .68, 0, height);
+  dirt.addColorStop(0, '#727144'); dirt.addColorStop(1, '#302d20'); ctx.fillStyle = dirt; ctx.fill();
+  ctx.beginPath(); for (let x = 0; x <= width + 4; x += 4) x === 0 ? ctx.moveTo(x, ground(x)) : ctx.lineTo(x, ground(x));
+  ctx.strokeStyle = '#d7ff3f'; ctx.lineWidth = 3; ctx.stroke();
+
+  const bikeX = width * .32;
+  if (started) {
+    speed = Math.min(speed + .015, 11);
+    scroll += speed;
+    score = passed;
+    if (jumpHeld && jumpHoldFrames < 24 && jumpHeight > 0) { jumpVelocity += .17; jumpHoldFrames++; }
+    if (jumpHeight > 0) {
+      jumpVelocity -= .34;
+      jumpHeight += jumpVelocity;
+      if (jumpHeight <= 0) { jumpHeight = 0; jumpVelocity = 0; jumpHeld = false; }
+    }
+  }
+  const nextWorldX = 700 + nextObstacle * 580;
+  const obstacleHeight = obstacles[nextObstacle % obstacles.length];
+  const obstacleColor = obstacleColors[nextObstacle % obstacleColors.length];
+  const obstacleX = nextWorldX - scroll;
+  if (obstacleX > -35 && obstacleX < width + 35) drawObstacle(obstacleX, ground(obstacleX), obstacleHeight, obstacleColor);
+  if (started && obstacleX < bikeX + 27 && obstacleX > bikeX - 27) {
+    if (jumpHeight < obstacleHeight + 27) loseLife();
+    else { nextObstacle++; passed++; score = passed; if (passed % 20 === 0) speed = Math.min(speed + 1.1, 11); updateHud(); saveRecord(); }
+  }
+  drawBike(bikeX, ground(bikeX) - 13 - jumpHeight);
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener('keydown', event => {
+  if (event.code === 'Space') { event.preventDefault(); if (!event.repeat) jumpStart(); }
+});
+window.addEventListener('keyup', event => { if (event.code === 'Space') jumpHeld = false; });
+document.getElementById('jump-button').addEventListener('pointerdown', event => { event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); jumpStart(); });
+for (const name of ['pointerup', 'pointercancel', 'lostpointercapture']) document.getElementById('jump-button').addEventListener(name, () => { jumpHeld = false; });
+document.getElementById('restart').addEventListener('click', () => startRun(true));
+document.getElementById('start-game').addEventListener('click', startRun);
+document.getElementById('player-form').addEventListener('submit', event => {
+  event.preventDefault();
+  playerName = playerInput.value.trim().slice(0, 18);
+  if (!playerName) return;
+  playerInput.value = playerName;
+  localStorage.setItem('voltrider-player', playerName);
+  saveRecord();
+  renderLeaderboard();
+  updateHud();
+});
+window.addEventListener('blur', () => { jumpHeld = false; });
+renderLeaderboard(); resize(); updateHud(); requestAnimationFrame(draw);
