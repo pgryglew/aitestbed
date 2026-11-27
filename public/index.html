@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>aitestbed.pl</title>
+  <meta name="description" content="Miejsce do testowania pomysłów z AI.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>aitestbed.pl</h1>
+      <p class="lead">Poligon do testowania pomysłów z AI. Ta strona działa na Node.js – podmień treść i buduj dalej.</p>
+    </header>
+
+    <section aria-labelledby="status-h">
+      <h2 id="status-h">Stan serwera</h2>
+      <p id="status" class="status" role="status">Sprawdzam…</p>
+    </section>
+
+    <section aria-labelledby="echo-h">
+      <h2 id="echo-h">Test API</h2>
+      <p>Wyślij wiadomość – serwer odeśle ją z godziną odbioru.</p>
+      <form id="echo-form">
+        <label for="message">Wiadomość</label>
+        <div class="row">
+          <input id="message" name="message" type="text" maxlength="500" autocomplete="off" required>
+          <button type="submit">Wyślij</button>
+        </div>
+      </form>
+      <pre id="echo-out" aria-live="polite"></pre>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
