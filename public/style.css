@@ -81,3 +81,65 @@ body{background:#f4f3ef;color:#171815;font-size:16px;line-height:1.65}
 }
 
 .bike-visual.image-fallback{background:linear-gradient(135deg,#e4e5de,#f7f6f2);display:grid;place-items:center}.bike-visual.image-fallback:after{content:"";width:74%;height:2px;background:linear-gradient(90deg,transparent,#a4aa89,transparent);position:absolute;bottom:29%;}.bike-visual.image-fallback:before{content:"ELECTRIC OFF-ROAD";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:500 12px "DM Mono",monospace;letter-spacing:.16em;color:#7a7e70}
+
+/* Keep product photos intact and prevent small screens from inheriting desktop widths. */
+.bike-visual{display:grid;place-items:center;overflow:hidden;background:#efeee9}
+.bike-visual img{object-fit:contain;padding:16px 22px;mix-blend-mode:multiply}
+.bike-card:hover .bike-visual img{transform:scale(1.025)}
+.hero-photo{object-position:center 60%}
+@media(max-width:760px){
+  html,body{max-width:100%;overflow-x:clip}
+  .site-header{width:100%;padding-inline:16px;gap:12px}
+  .site-header nav{display:none}
+  .brand{font-size:13px}
+  .header-cta{font-size:11px;padding:10px 12px;white-space:nowrap}
+  .hero{min-height:680px;height:min(100svh,800px)}
+  .hero-copy{padding:54px 20px 70px}
+  .hero h1{font-size:clamp(56px,14vw,78px)}
+  .hero-lead{font-size:15px;max-width:34ch}
+  .hero-photo{object-position:52% 58%}
+  .hero-foot{left:20px;width:calc(100% - 40px);font-size:8px}
+  .section-pad{padding:64px 20px}
+  .section-heading{display:block}
+  .section-heading h2,.guide h2{font-size:clamp(44px,11vw,58px)}
+  .section-intro{max-width:38ch;margin-top:16px}
+  .filters{display:flex;flex-wrap:wrap;gap:8px}
+  .filter{font-size:11px;padding:9px 12px}
+  .sort-label{margin-left:auto}
+  .filters select{max-width:130px}
+  .bike-grid{grid-template-columns:minmax(0,1fr);gap:16px}
+  .bike-visual{height:auto;aspect-ratio:1.55}
+  .bike-visual img{padding:12px 18px}
+  .bike-card-content{padding:18px}
+  .bike-card h3{font-size:23px}
+  .bike-card .subtitle{font-size:13px}
+  .mini-specs{grid-template-columns:1fr 1fr}
+  .compare{padding-block:64px}
+  .compare-toolbar{gap:10px;align-items:center}
+  .table-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+  .compare-table{width:max-content;min-width:600px;table-layout:auto}
+  .compare-table th:first-child,.compare-table td:first-child{position:sticky;left:0;z-index:2;background:#171815;min-width:128px}
+  .compare-table th,.compare-table td{min-width:145px;padding:13px 10px;font-size:12px}
+  .compare-table thead th:first-child{min-width:128px}
+  .guide{display:block}
+  .guide-list{margin-top:28px}
+  .guide-list article{grid-template-columns:24px minmax(0,1fr) 18px;gap:8px}
+  .sources{display:block}
+  .source-links{min-width:0}
+  footer{padding-inline:20px}
+}
+@media(max-width:390px){
+  .site-header{padding-inline:12px}
+  .brand{font-size:11px;gap:6px}
+  .brand-mark{width:27px;height:27px}
+  .header-cta{font-size:10px;padding:9px}
+  .hero{min-height:650px}
+  .hero-copy{padding-top:48px}
+  .hero h1{font-size:56px}
+  .hero-lead{font-size:14px}
+  .section-pad{padding-inline:16px}
+  .filters{column-gap:6px}
+  .filter{padding:8px 10px}
+  .bike-visual{aspect-ratio:1.35}
+}
+
