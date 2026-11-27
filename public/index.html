@@ -3,35 +3,102 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>aitestbed.pl</title>
-  <meta name="description" content="Miejsce do testowania pomysłów z AI.">
+  <title>aitestbed.pl – testujemy AI na prawdziwych problemach</title>
+  <meta name="description" content="Poligon do testowania pomysłów z AI: sprawdzamy, co działa, zanim trafi do produktu.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@85..100,400..800&display=swap">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <main>
-    <header>
-      <h1>aitestbed.pl</h1>
-      <p class="lead">Poligon v2 do testowania pomysłów z AI. Ta strona działa na Node.js – podmień treść i buduj dalej.</p>
-    </header>
+  <header class="hero">
+    <a class="logo" href="/" aria-label="aitestbed.pl – strona główna">ai test<br>bed.pl</a>
+    <nav class="nav" aria-label="Główna nawigacja">
+      <a href="#eksperymenty">Eksperymenty</a>
+      <a href="#pomagamy">Jak pomagamy</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
 
-    <section aria-labelledby="status-h">
-      <h2 id="status-h">Stan serwera</h2>
-      <p id="status" class="status" role="status">Sprawdzam…</p>
-    </section>
+    <div class="hero-body">
+      <h1>Testujemy AI na<br><span>prawdziwych problemach.</span></h1>
+      <p class="lead">To poligon, na którym sprawdzamy pomysły z AI, zanim trafią do produktu. Mniej slajdów, więcej działających prototypów.</p>
+      <p id="status" class="status" role="status">Sprawdzam serwer…</p>
 
-    <section aria-labelledby="echo-h">
-      <h2 id="echo-h">Test API</h2>
-      <p>Wyślij wiadomość – serwer odeśle ją z godziną odbioru.</p>
-      <form id="echo-form">
-        <label for="message">Wiadomość</label>
-        <div class="row">
-          <input id="message" name="message" type="text" maxlength="500" autocomplete="off" required>
-          <button type="submit">Wyślij</button>
+      <div class="ask">
+        <div class="chips" aria-label="Przykładowe pytania">
+          <button type="button" class="chip">Co tu testujecie?</button>
+          <button type="button" class="chip">Jak wygląda typowy eksperyment?</button>
+          <button type="button" class="chip">Czy mogę zgłosić własny pomysł?</button>
         </div>
-      </form>
-      <pre id="echo-out" aria-live="polite"></pre>
-    </section>
-  </main>
+        <form id="ask-form" class="pill">
+          <label for="ask" class="sr">Zapytaj o cokolwiek</label>
+          <input id="ask" name="message" type="text" maxlength="500" autocomplete="off" placeholder="Zapytaj o cokolwiek…" required>
+          <button type="submit" class="send" aria-label="Wyślij">↑</button>
+        </form>
+        <p id="answer" class="answer" aria-live="polite"></p>
+      </div>
+    </div>
+  </header>
+
+  <section id="eksperymenty" class="light">
+    <div class="wrap">
+      <p class="eyebrow">Wybrane eksperymenty</p>
+      <h2>Rozwiązujemy problemy, które warto rozwiązać.</h2>
+      <p class="intro">Zaczynamy od ludzi, którzy korzystają z narzędzia: ich kontekstu, ograniczeń i tego, co im przeszkadza.</p>
+
+      <article class="card c1">
+        <h3>Asystent do dokumentacji</h3>
+        <p>Wiedza rozproszona w kilkunastu miejscach. Prototyp, który odpowiada na pytania i wskazuje źródło odpowiedzi.</p>
+        <span class="tag">Wiedza firmowa</span>
+      </article>
+      <article class="card c2">
+        <h3>Analiza zgłoszeń klientów</h3>
+        <p>Tysiące wiadomości tygodniowo i nikt ich nie czyta. Sprawdzamy, czy AI potrafi wskazać powtarzające się problemy.</p>
+        <span class="tag">Obsługa klienta</span>
+      </article>
+      <article class="card c3">
+        <h3>Szkice interfejsów z opisu</h3>
+        <p>Od zdania do klikalnego prototypu. Mierzymy, ile czasu to oszczędza projektantom i gdzie zawodzi.</p>
+        <span class="tag">Projektowanie</span>
+      </article>
+
+      <div class="actions">
+        <a class="btn ghost" href="#kontakt">Zgłoś swój pomysł</a>
+        <a class="link" href="/api/health">Zobacz stan API</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="pomagamy" class="dark">
+    <div class="wrap">
+      <p class="eyebrow">Jak pomagamy</p>
+      <h2 class="red">Poruszasz się w czymś skomplikowanym.</h2>
+      <p class="intro">Znamy to. Wyzwania zwykle wyglądają podobnie.</p>
+
+      <ul class="rows">
+        <li><q>Wszystko jest priorytetem. Mamy setki zadań i nikt nie wie, od czego zacząć.</q><p>Wybieramy jeden problem i sprawdzamy go w tydzień.</p><span class="arrow" aria-hidden="true">→</span></li>
+        <li><q>Wszyscy gadają o AI, a nikt nie wie, jak jej użyć.</q><p>Pokazujemy, co działa, na waszych danych i w waszym procesie.</p><span class="arrow" aria-hidden="true">→</span></li>
+        <li><q>Przetestowaliśmy kilka narzędzi i żadne nie zostało z nami na dłużej.</q><p>Mierzymy efekt, zanim ktokolwiek podpisze umowę.</p><span class="arrow" aria-hidden="true">→</span></li>
+        <li><q>Projekt i programowanie rozjechały się, a AI to pogłębiło.</q><p>Budujemy wspólny fundament, z którego korzysta cały zespół.</p><span class="arrow" aria-hidden="true">→</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="kontakt" class="cta">
+    <div class="wrap">
+      <h2>Masz trudny problem? Posłuchamy.</h2>
+      <p>Opisz, z czym się mierzysz, a ustalimy, co dalej.</p>
+      <a class="btn solid" href="mailto:kontakt@aitestbed.pl">Napisz do nas →</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p class="wordmark" aria-hidden="true">aitest<br>bed.pl</p>
+      <p class="fine">© 2026 aitestbed.pl</p>
+    </div>
+  </footer>
+
   <script src="/app.js"></script>
 </body>
 </html>
