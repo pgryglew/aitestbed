@@ -50,6 +50,25 @@ const MOTORCYCLES = [
 ];
 
 function handleMcp(req, res) {
+  if (req.method === 'GET' || req.method === 'HEAD') {
+    // Browsers and endpoint checkers often open the advertised URL with GET.
+    // MCP clients use POST for JSON-RPC; GET is reserved for optional SSE streams.
+    if ((req.headers.accept || '').includes('text/event-stream')) {
+      res.writeHead(405, { Allow: 'POST', 'Content-Type': 'text/plain; charset=utf-8' });
+      return res.end('Server-initiated MCP event streams are not supported. Send JSON-RPC requests with POST.');
+    }
+    const info = {
+      name: 'VoltRider site tools',
+      transport: 'MCP Streamable HTTP',
+      endpoint: 'https://aitestbed.pl/mcp',
+      requestMethod: 'POST',
+      tools: MCP_TOOLS.map(({ name, description }) => ({ name, description })),
+      serverCard: 'https://aitestbed.pl/.well-known/mcp/server-card.json',
+      documentation: 'https://aitestbed.pl/llms.txt',
+    };
+    res.writeHead(200, { 'Content-Type': MIME['.json'], 'Cache-Control': 'public, max-age=300' });
+    return res.end(req.method === 'HEAD' ? undefined : JSON.stringify(info, null, 2));
+  }
   if (req.method !== 'POST') {
     res.writeHead(405, { Allow: 'POST' });
     return res.end();
