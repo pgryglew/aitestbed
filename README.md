@@ -18,6 +18,15 @@ Port ustawisz zmienną `PORT`.
 - `public/` – frontend (HTML, CSS, JS)
 - `test/` – testy
 
+## Dostęp dla agentów i wyszukiwarek
+
+- `/robots.txt` deklaruje `Content-Signal: search=yes, ai-train=no` i wskazuje sitemapę.
+- `/sitemap.xml` wymienia publiczne strony serwisu.
+- `/llms.txt` zawiera skrót serwisu i odnośniki do ważnych stron.
+- Żądanie strony głównej z `Accept: text/markdown` zwraca `/index.md`; nagłówek `Link` reklamuje wersję Markdown i `llms.txt`.
+- `/.well-known/mcp/server-card.json` opisuje serwer MCP, a `POST /mcp` udostępnia tylko do odczytu narzędzia `get_voltrider_overview` i `list_electric_offroad_motorcycles`.
+- `public/webmcp.js` rejestruje narzędzie przeglądarkowe `summarize_voltrider`, jeśli przeglądarka udostępnia WebMCP.
+
 ## Wdrożenie pod aitestbed.pl (VPS, Ubuntu)
 
 1. Ustaw w DNS rekordy A (i AAAA) domeny `aitestbed.pl` oraz `www` na adres IP serwera.

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/mcp-server-card/v1.json",
+  "version": "1.0",
+  "protocolVersion": "2025-06-18",
+  "serverInfo": {
+    "name": "aitestbed/voltrider",
+    "title": "VoltRider site tools",
+    "version": "1.0.0"
+  },
+  "description": "Read-only MCP tools for discovering VoltRider pages and its electric off-road motorcycle comparison guide.",
+  "documentationUrl": "https://aitestbed.pl/llms.txt",
+  "transport": {
+    "type": "streamable-http",
+    "endpoint": "https://aitestbed.pl/mcp"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    }
+  }
+}

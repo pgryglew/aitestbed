@@ -135,6 +135,7 @@ body{background:#f4f3ef;color:#171815;font-size:16px;line-height:1.65}
 .hero-actions{display:flex;flex-direction:column;align-items:center;gap:10px}
 .hero-actions .button-game{border:1px solid #ffffff85;color:#fff}
 .hero-actions .button-game span{color:#e6f33d}
+.info-page{max-width:850px;min-height:70vh;margin:0 auto;padding:90px 28px 110px;color:#171815}.info-page h1{font-size:clamp(42px,7vw,72px);line-height:1;letter-spacing:-.07em;margin:0 0 28px}.info-page h2{margin:32px 0 8px}.info-page p{max-width:70ch;color:#50534b;line-height:1.8}.info-page a{color:#43520d;text-decoration:underline;text-underline-offset:3px}.info-page .button{text-decoration:none}.info-links{display:flex;gap:22px;margin-top:34px}.info-page .eyebrow{color:#686b63}
 @media(max-width:390px){
   .site-header{padding-inline:12px}
   .brand{font-size:11px;gap:6px}

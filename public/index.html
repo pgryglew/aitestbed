@@ -6,6 +6,58 @@
   <meta name="theme-color" content="#10120f">
   <meta name="description" content="Porównaj elektryczne motocykle crossowe i off-roadowe: Stark VARG MX, Sur-Ron Light Bee X, Talaria Sting R MX4 i KTM Freeride E.">
   <title>VoltRider — elektryczne motocykle off-road</title>
+  <link rel="canonical" href="https://aitestbed.pl/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://aitestbed.pl/#organization",
+        "name": "VoltRider",
+        "url": "https://aitestbed.pl/",
+        "description": "Niezależny przewodnik po elektrycznych motocyklach off-road.",
+        "sameAs": ["https://github.com/pgryglew/aitestbed"],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "kontakt redakcyjny",
+          "url": "https://aitestbed.pl/contact.html",
+          "availableLanguage": "Polish"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://aitestbed.pl/#website",
+        "url": "https://aitestbed.pl/",
+        "name": "VoltRider",
+        "inLanguage": "pl-PL",
+        "publisher": {"@id": "https://aitestbed.pl/#organization"}
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://aitestbed.pl/#webpage",
+        "url": "https://aitestbed.pl/",
+        "name": "VoltRider — elektryczne motocykle off-road",
+        "description": "Przewodnik i porównanie elektrycznych motocykli crossowych i off-roadowych.",
+        "isPartOf": {"@id": "https://aitestbed.pl/#website"},
+        "about": {"@id": "https://aitestbed.pl/#organization"},
+        "inLanguage": "pl-PL",
+        "mainEntity": {"@id": "https://aitestbed.pl/#models"}
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://aitestbed.pl/#models",
+        "name": "Porównywane elektryczne motocykle off-road",
+        "itemListElement": [
+          {"@type":"ListItem","position":1,"name":"Stark VARG MX 1.2"},
+          {"@type":"ListItem","position":2,"name":"Sur-Ron Light Bee X"},
+          {"@type":"ListItem","position":3,"name":"Talaria Sting R MX4"},
+          {"@type":"ListItem","position":4,"name":"KTM Freeride E"}
+        ]
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -63,9 +115,10 @@
       </div>
     </section>
 
-    <section class="sources section-pad"><div><p class="eyebrow">DANE I ZDJĘCIA</p><h2>Sprawdź u źródła.</h2><p>Modele mają różne przeznaczenie i specyfikacje zależne od rynku. Zdjęcia motocykli otwierają się ze źródeł producentów i sprzedawców.</p></div><div class="source-links"><a href="https://www.starkfuture.com/products/stark-varg" target="_blank" rel="noreferrer">Stark VARG MX ↗</a><a href="https://sur-ron.com/" target="_blank" rel="noreferrer">Sur-Ron ↗</a><a href="https://www.talaria-ebike.com/product/talaria-sting-r-mx4/" target="_blank" rel="noreferrer">Talaria Sting R MX4 ↗</a><a href="https://www.ktm.com/" target="_blank" rel="noreferrer">KTM Freeride E ↗</a></div></section>
+    <section class="sources section-pad" id="sources"><div><p class="eyebrow">DANE I ZDJĘCIA</p><h2>Sprawdź u źródła.</h2><p>Modele mają różne przeznaczenie i specyfikacje zależne od rynku. Zdjęcia motocykli otwierają się ze źródeł producentów i sprzedawców.</p></div><div class="source-links"><a href="https://www.starkfuture.com/products/stark-varg" target="_blank" rel="noreferrer">Stark VARG MX ↗</a><a href="https://sur-ron.com/" target="_blank" rel="noreferrer">Sur-Ron ↗</a><a href="https://www.talaria-ebike.com/product/talaria-sting-r-mx4/" target="_blank" rel="noreferrer">Talaria Sting R MX4 ↗</a><a href="https://www.ktm.com/" target="_blank" rel="noreferrer">KTM Freeride E ↗</a></div></section>
   </main>
-  <footer><a class="brand" href="#top"><span class="brand-mark">V</span> VOLT<span>RIDER</span></a><span>ELEKTRYCZNY OFF-ROAD — WYBIERZ SWOJĄ TRASĘ.</span><a href="#top">NA GÓRĘ ↑</a></footer>
+  <footer><a class="brand" href="#top"><span class="brand-mark">V</span> VOLT<span>RIDER</span></a><span>ELEKTRYCZNY OFF-ROAD — WYBIERZ SWOJĄ TRASĘ.</span><nav aria-label="Informacje"><a href="/about.html">O projekcie</a><a href="/contact.html">Kontakt</a><a href="/terms.html">Zasady</a><a href="#top">NA GÓRĘ ↑</a></nav></footer>
   <script src="/app.js"></script>
+  <script src="/webmcp.js"></script>
 </body>
 </html>
